@@ -1,4 +1,3 @@
-
 {
   "name": "POPKID-MD",
   "version": "2.0.0",
@@ -9,8 +8,12 @@
     "stop": "pm2 stop POPKID-MD",
     "restart": "pm2 restart POPKID-MD"
   },
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+  },
   "dependencies": {
-    "@whiskeysockets/baileys": "npm:angularsockets",
+    "@whiskeysockets/baileys": "6.6.0",
     "@adiwajshing/keyed-db": "latest",
     "@dark-yasiya/yt-dl.js": "1.0.5",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
