@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@whiskeysockets/baileys": "npm:@badzz88/baileys",
-    "jimp": "^1.6.0",
+    "jimp": "^0.16.x",
     "@hapi/boom": "^10.0.1",
     "@adiwajshing/keyed-db": "latest",
     "@dark-yasiya/yt-dl.js": "1.0.5",
