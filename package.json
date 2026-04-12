@@ -9,11 +9,11 @@
     "restart": "pm2 restart POPKID-MD"
   },
   "engines": {
-    "node": "20.x",
-    "npm": "10.x"
+    "node": ">=20.x",
+    "npm": ">=10.x"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "npm:angularsockets",
+    "@whiskeysockets/baileys": "git+https://github.com/dappaoffc/baileys-mod.git",
     "@adiwajshing/keyed-db": "latest",
     "@dark-yasiya/yt-dl.js": "1.0.5",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
