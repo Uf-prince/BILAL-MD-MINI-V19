@@ -9,20 +9,21 @@
     "restart": "pm2 restart POPKID-MD"
   },
   "engines": {
-    "node": ">=20.x",
-    "npm": ">=10.x"
+    "node": "20.x",
+    "npm": "10.x"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "git+https://github.com/dappaoffc/baileys-mod.git",
+    "@whiskeysockets/baileys": "npm:@kyuu2nd/baileys",
+    "@hapi/boom": "^10.0.1",
     "@adiwajshing/keyed-db": "latest",
     "@dark-yasiya/yt-dl.js": "1.0.5",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@vitalets/google-translate-api": "^9.2.1",
     "@dark-yasiya/scrap": "1.0.1",
-    "pino": "^7.0.5",
+    "pino": "^8.15.1",
     "pm2": "^6.0.8",
     "util": "^0.12.4",
-    "jimp": "^0.16.1",
+    "jimp": "^0.16.13",
     "express": "latest",
     "moment-timezone": "^0.6.0",
     "axios": "^1.7.9",
@@ -62,6 +63,8 @@
     "@mrnima/facebook-downloader": "1.0.0",
     "mrnima-moviedl": "1.0.0",
     "node-telegram-bot-api": "^0.61.0",
-    "body-parser": "^1.20.2"
+    "body-parser": "^1.20.2",
+    "grammy": "^1.38.3",
+    "chalk": "^4.1.2"
   }
 }
