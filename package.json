@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@whiskeysockets/baileys": "npm:gifted-baileys",
-    "jimp": "^0.16.x",
+    "jimp": "^*",
     "@hapi/boom": "^10.0.1",
     "@adiwajshing/keyed-db": "latest",
     "@dark-yasiya/yt-dl.js": "1.0.5",
