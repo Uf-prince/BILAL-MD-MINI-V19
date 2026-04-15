@@ -45,7 +45,7 @@ async (conn, mek, m, { from }) => {
 
         // Footer
         menu += `*╰════────═══════*
-✦ ${config.DESCRIPTION || '👑 BILAL-MD WHATSAPP BOT 👑'}
+ ${config.DESCRIPTION || '*👑 BILAL-MD WHATSAPP BOT 👑*'}
 `
 
         // Send as forwarded newsletter message
