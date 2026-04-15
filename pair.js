@@ -98,9 +98,9 @@ const defaultConfig = {
   AUTO_RECORDING: 'false',
   AUTO_LIKE_EMOJI: ['🖤', '🍬', '💫', '🎈', '💚', '🎶', '❤️', '🧫', '⚽'],
   PREFIX: config.PREFIX || '.',
-  BOT_FOOTER: '> © MADE BY POPKID',
+  BOT_FOOTER: '👑 BILAL-MD 👑',
   MAX_RETRIES: 3,
-  GROUP_INVITE_LINK: 'https://chat.whatsapp.com/BRh9Hn12AGh7AKT4HTqXK5?mode=hqrc',
+  GROUP_INVITE_LINK: 'https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=gi_t',
   ADMIN_LIST_PATH: './admin.json',
   IMAGE_PATH: 'https://files.catbox.moe/a93xcb.jpg',
   NEWSLETTER_JID: [
