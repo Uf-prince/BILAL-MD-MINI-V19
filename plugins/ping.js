@@ -13,8 +13,8 @@ const verifiedContact = {
             displayName: "BILAL-MD",
             Vcard: `BEGIN:VCARD
 VERSION:3.0
-FN:POP KIDS VERIFIED ✅
-ORG:POP KIDS BOT;
+FN:AI VERIFIED ✅
+ORG:WHATSAPP BOT;
 TEL;type=CELL;type=VOICE;waid=923078071982:+923078071982
 END:VCARD`
 
