@@ -1,5 +1,42 @@
-const { cmd } = require('../command');
+hereconst { cmd } = require('../command');
 
+// --- PROMOTE COMMAND ---
+cmd({
+    pattern: "promote",
+    alias: ["p", "makeadmin"],
+    desc: "Promotes a member to group admin",
+    category: "admin",
+    react: "⬆️",
+    filename: __filename
+},
+async(conn, mek, m, {
+    from, q, isGroup, botNumber, isBotAdmins, isAdmins, reply
+}) => {
+    if (!isGroup) return reply("❌ This command can only be used in groups.");
+    if (!isAdmins) return reply("❌ Only group admins can use this command.");
+    if (!isBotAdmins) return reply("❌ I need to be an admin to use this command.");
+
+    let number;
+    if (m.quoted) {
+        number = m.quoted.sender.split("@")[0];
+    } else if (q && q.includes("@")) {
+        number = q.replace(/[@\s]/g, '');
+    } else {
+        return reply("❌ Please reply to a message or tag a user to promote.");
+    }
+
+    const jid = number + "@s.whatsapp.net";
+
+    try {
+        await conn.groupParticipantsUpdate(from, [jid], "promote");
+        reply(`✅ Successfully promoted @${number} to Admin.`, { mentions: [jid] });
+    } catch (error) {
+        console.error("Promote command error:", error);
+        reply("❌ Failed to promote the member.");
+    }
+});
+
+// --- DEMOTE COMMAND ---
 cmd({
     pattern: "demote",
     alias: ["d", "dismiss", "removeadmin"],
@@ -9,27 +46,21 @@ cmd({
     filename: __filename
 },
 async(conn, mek, m, {
-    from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isCreator, isDev, isAdmins, reply
+    from, q, isGroup, botNumber, isBotAdmins, isAdmins, reply
 }) => {
-    // Check if the command is used in a group
     if (!isGroup) return reply("❌ This command can only be used in groups.");
-
-    // Check if the user is an admin
     if (!isAdmins) return reply("❌ Only group admins can use this command.");
-
-    // Check if the bot is an admin
     if (!isBotAdmins) return reply("❌ I need to be an admin to use this command.");
 
     let number;
     if (m.quoted) {
-        number = m.quoted.sender.split("@")[0]; // If replying to a message, get the sender's number
+        number = m.quoted.sender.split("@")[0];
     } else if (q && q.includes("@")) {
-        number = q.replace(/[@\s]/g, ''); // If manually typing a number
+        number = q.replace(/[@\s]/g, '');
     } else {
-        return reply("❌ Please reply to a message or provide a number to demote.");
+        return reply("❌ Please reply to a message or tag a user to demote.");
     }
 
-    // Prevent demoting the bot itself
     if (number === botNumber) return reply("❌ The bot cannot demote itself.");
 
     const jid = number + "@s.whatsapp.net";
@@ -42,4 +73,3 @@ async(conn, mek, m, {
         reply("❌ Failed to demote the member.");
     }
 });
-
