@@ -3,49 +3,57 @@ const axios = require('axios');
 
 cmd({
     pattern: "video",
-    alias: ["vdl", "ytmp4"],
-    desc: "Download Video from New API",
+    alias: ["ytmp4", "vdl", "ytv"],
+    desc: "Download YouTube Videos/Shorts (XTE API)",
     category: "download",
-    react: "📥",
+    react: "🎬",
     filename: __filename
 },
 async (conn, mek, m, { from, q, reply, sender }) => {
     try {
-        if (!q) return reply("❌ Link to do Bilal!");
+        if (!q) return reply("❌ Bilal, YouTube link to do! (Shorts ya Video)");
 
-        // Reaction
+        // Processing reaction
         await conn.sendMessage(from, { react: { text: "⏳", key: mek.key } });
 
-        // API Call (Yahan wahi link lagayein jahan se ye JSON aaya hai)
-        const apiUrl = `https://api.d2-ye.my.id/api/download/ytdl?url=${q}`; 
+        // XTE YouTube API Call
+        const apiUrl = `https://api.xte.web.id/v3/dl/ytmp4?url=${encodeURIComponent(q)}`;
         const res = await axios.get(apiUrl);
         
-        if (!res.data.status) return reply("❌ Video nahi mil saki!");
+        if (!res.data.status || !res.data.result) {
+            return reply("❌ Video nahi mil saki. API limit ya link ka masla ho sakta hai.");
+        }
 
-        const { title, download, quality } = res.data.result;
+        const data = res.data.result;
+        const videoUrl = data.download; // Direct MP4 link
+        const title = data.title || "YouTube Video";
+        const quality = data.quality || "720p";
 
-        // Sending Video with Branding
-        await conn.sendMessage(from, {
-            video: { url: download },
-            caption: `*✨ TITLE:* ${title}\n*📊 QUALITY:* ${quality}\n\n> *Downloaded by BILAL-MD*`,
-            contextInfo: {
-                forwardingScore: 999,
-                isForwarded: true,
-                externalAdReply: {
-                    title: "BILAL-MD VIDEO DL",
-                    body: `Quality: ${quality}`,
-                    thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
-                    sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
-                    mediaType: 1,
-                    renderLargerThumbnail: false
-                }
+        // Professional Branding
+        const branding = {
+            forwardingScore: 999,
+            isForwarded: true,
+            externalAdReply: {
+                title: "BILAL-MD YOUTUBE DL",
+                body: `Quality: ${quality} | ${title}`,
+                thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
+                sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
+                mediaType: 1,
+                renderLargerThumbnail: false
             }
+        };
+
+        // Send Video to User
+        await conn.sendMessage(from, {
+            video: { url: videoUrl },
+            caption: `*✨ TITLE:* ${title}\n*📊 QUALITY:* ${quality}\n\n> *Downloaded by BILAL-MD*`,
+            contextInfo: branding
         }, { quoted: mek });
 
         await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
 
     } catch (e) {
-        console.error(e);
-        reply("❌ Error: API limit ya server ka masla hai.");
+        console.error("YT Download Error:", e);
+        reply("❌ Error: API server response nahi de raha.");
     }
 });
