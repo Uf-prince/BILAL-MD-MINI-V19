@@ -4,10 +4,10 @@ const { runtime } = require('../lib/functions')
 
 cmd({
     pattern: "menu",
-    alias: ["allmenu","fullmenu"],
+    alias: ["allmenu","fullmenu", "list", "m"],
     desc: "Show all bot commands",
     category: "menu",
-    react: "📜",
+    react: "👑",
     filename: __filename
 },
 async (conn, mek, m, { from }) => {
@@ -22,48 +22,47 @@ async (conn, mek, m, { from }) => {
         })
 
         // Header
-        let menu = `╭━━━❂ *${config.BOT_NAME}* 🖥️
-║ 👑 ᴏᴡɴᴇʀ : *${config.OWNER_NAME}*
-║ ⚙️ ᴘʀᴇғɪx : *${config.PREFIX}*
-║ 🌐 ᴘʟᴀᴛғᴏʀᴍ : *Heroku*
-║ ⏱️ ʀᴜɴᴛɪᴍᴇ : *${runtime(process.uptime())}*
-║
+        let menu = `*╭━━━👑 BILAL-MD 👑*
+*║ 👑 USER :❯ ${config.OWNER_NAME}*
+*║ 👑 PREFIX :❯ ❮  ${config.PREFIX}  ❯*
+*║ 👑 PLATFORM :❯ bilal.arm64.x3hz*
+*║ 👑 UPTIME :❯ ${runtime(process.uptime())}*
 `
 
         // Build menu dynamically
         for (let category in categories) {
-            menu += `║ ╭━━══••══━━••⊷
-║ ┊ ❂ . *${category.toUpperCase()}*\n`
+            menu += `*║ ╭━━══••══━━••⊷*
+*║ 👑 ${category.toUpperCase()}*\n`
 
             categories[category].forEach(cmd => {
-                menu += `║ ┊ ❂ . ${config.PREFIX}${cmd}\n`
+                menu += `*║ 👑 . ${config.PREFIX}${cmd}*\n`
             })
 
-            menu += `║ ╰━━══••══━━••⊷
+            menu += `*║ ╰━━══••══━━••⊷*
 ║
 `
         }
 
         // Footer
-        menu += `╰════────═══════
-✦ ${config.DESCRIPTION || 'Explore all bot commands!'}
+        menu += `*╰════────═══════*
+✦ ${config.DESCRIPTION || '👑 BILAL-MD WHATSAPP BOT 👑'}
 `
 
         // Send as forwarded newsletter message
         await conn.sendMessage(from, {
-            image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/a93xcb.jpg' },
+            image: { url: config.MENU_IMAGE_URL || 'https://i.postimg.cc/7LWBgYMq/bilal.jpg' },
             caption: menu,
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,
                 externalAdReply: {
                     showAdAttribution: true,
-                    title: `${config.BOT_NAME} Menu`,
-                    body: config.DESCRIPTION || 'Explore all bot commands!',
+                    title: `*👑 MENU 👑*`,
+                    body: config.DESCRIPTION || '*👑 BILAL-MD WHATSAPP BOT 👑*',
                     mediaType: 2,
                     mediaUrl: 'https://github.com',
-                    thumbnail: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/a93xcb.jpg' },
-                    sourceUrl: 'https://github.com'
+                    thumbnail: { url: config.MENU_IMAGE_URL || 'https://i.postimg.cc/7LWBgYMq/bilal.jpg' },
+                    sourceUrl: 'https://github.com/Bilalteh05'
                 },
                 mentionedJid: [m.sender]
             }
