@@ -14,18 +14,18 @@ module.exports = {
   AUTO_RECORDING: 'false',
   ANTI_CALL: 'false',
     
-  AUTO_LIKE_EMOJI: ['🖤', '🍬', '💫', '🎈', '💚', '🎶', '❤️', '🧫', '⚽'],
+  AUTO_LIKE_EMOJI: ['❣️', '💓', '💫', '♥️', '😃', '😊', '❤️', '😍', '🤗'],
 
   PREFIX: config.PREFIX || '.',
 
-  BOT_FOOTER: '> © MADE BY POPKID',
+  BOT_FOOTER: '*👑 BILAL-MD 👑*',
 
   MAX_RETRIES: 3,
 
-  GROUP_INVITE_LINK: 'https://chat.whatsapp.com/BRh9Hn12AGh7AKT4HTqXK5?mode=hqrc',
+  GROUP_INVITE_LINK: 'https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=gi_t',
 
   ADMIN_LIST_PATH: './admin.json',
-  IMAGE_PATH: 'https://files.catbox.moe/a93xcb.jpg',
+  IMAGE_PATH: 'https://i.postimg.cc/7LWBgYMq/bilal.jpg',
 
   NEWSLETTER_JID: '120363289379419860@newsletter',
   NEWSLETTER_MESSAGE_ID: '428',
@@ -36,7 +36,7 @@ module.exports = {
 
   DEV_MODE: 'false',
 
-  CHANNEL_LINK: 'https://whatsapp.com/channel/0029VacgxK96hENmSRMRxx1r',
+  CHANNEL_LINK: 'https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G',
 
   WORK_TYPE: "public",
 
@@ -55,7 +55,7 @@ module.exports = {
   READ_MESSAGE: config.READ_MESSAGE || 'true',
 
   CUSTOM_REACT: config.CUSTOM_REACT || 'false',
-  CUSTOM_REACT_EMOJIS: config.CUSTOM_REACT_EMOJIS || '🥲,😂,👍🏻,🙂,😔',
+  CUSTOM_REACT_EMOJIS: config.CUSTOM_REACT_EMOJIS || '😚,😊,☺️,🙂,🥳',
 
   MODE: config.MODE || "public",
 };
