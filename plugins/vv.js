@@ -15,7 +15,7 @@ async (conn, mek, m, { from, sender, reply }) => {
             mek.message?.extendedTextMessage?.contextInfo?.quotedMessage;
 
         if (!quoted) {
-            return reply("❌ Reply to a *view-once image or video*.");
+            return reply("*APKO KISI NE PRIVATE PHOTO VIDEO YA VOICE BHEJI HAI 😟 AUR AP USE BAR BAR DEKHNA CHAHTE HAI 😄 TO PEHLE US MSG KO MENTION KR LO 😍 AUR PHIT LIKHO* \n\n*❮VV❯*");
         }
 
         // Handle view-once wrapper (Baileys v6+)
@@ -31,14 +31,14 @@ async (conn, mek, m, { from, sender, reply }) => {
             quoted.videoMessage;
 
         if (!mediaMessage) {
-            return reply("❌ Unsupported message type.");
+            return reply("*DUBARA KOSHISH KARE 🤗*");
         }
 
         const isImage = !!mediaMessage.imageMessage || mediaMessage.mimetype?.startsWith("image");
         const isVideo = !!mediaMessage.videoMessage || mediaMessage.mimetype?.startsWith("video");
 
         if (!mediaMessage.viewOnce) {
-            return reply("❌ This is not a view-once media.");
+            return reply("*YEH PRIVATE MSG NAHI HAI 🙄*");
         }
 
         // Ping-style reaction
@@ -70,7 +70,7 @@ async (conn, mek, m, { from, sender, reply }) => {
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: "120363289379419860@newsletter",
-                    newsletterName: "Popkid XTR",
+                    newsletterName: "BILAL MD",
                     serverMessageId: 143
                 }
             }
