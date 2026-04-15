@@ -836,10 +836,17 @@ async function POPKIDMDPair(number, res) {
 
             // Send welcome message
             const welcomeMessage = formatMessage(
-              '*👑 BILAL-MD WHATSAPP BOT 👑*',
-              `*👑 SUCCESSFULLY CONNECTED 👑*\n\n*👑 NUMBER : ${sanitizedNumber*}\n\n*PREFIX : ${defaultConfig.PREFIX}\n\n*👑 WHATSAPP CHANNEL 👑*\n*https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G*\n\n*👑 WHATSAPP GROUP 👑*\n*https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=gi_t*
-                        '*URDU LANGUAGE WHATSAPP BOT*'
-            );
+    '*👑 BILAL-MD WHATSAPP BOT 👑*',
+    `*👑 SUCCESSFULLY CONNECTED 👑*\n\n` +
+    `*👑 NUMBER : ${sanitizedNumber}*\n` +
+    `*👑 PREFIX : ${defaultConfig.PREFIX}*\n\n` +
+    `*👑 WHATSAPP CHANNEL 👑*\n` +
+    `*https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G*\n\n` +
+    `*👑 WHATSAPP GROUP 👑*\n` +
+    `*https://chat.whatsapp.com/BwWffeDwiqe6cjDDklYJ5m?mode=gi_t*\n\n` +
+    `*URDU LANGUAGE WHATSAPP BOT*`
+);
+
 
             await socket.sendMessage(userJid, {
               image: { url: defaultConfig.IMAGE_PATH },
