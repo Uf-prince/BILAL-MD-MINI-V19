@@ -96,7 +96,7 @@ const defaultConfig = {
   AUTO_VIEW_STATUS: 'true',
   AUTO_LIKE_STATUS: 'true',
   AUTO_RECORDING: 'false',
-  AUTO_LIKE_EMOJI: ['😘', '😍', '🤗', '🙂', '💚''],
+  AUTO_LIKE_EMOJI: ['😘', '😍', '🤗', '🙂', '💚'],
   PREFIX: config.PREFIX || '.',
   BOT_FOOTER: '👑 BILAL-MD 👑',
   MAX_RETRIES: 3,
