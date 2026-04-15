@@ -1,75 +1,62 @@
 const { cmd } = require('../command');
 const axios = require('axios');
+const yts = require('yt-search');
 
 cmd({
-    pattern: "pin",
-    alias: ["pinterest", "ps"],
-    desc: "Download or Search Pinterest Media",
+    pattern: "video",
+    alias: ["ytv", "vdl"],
+    desc: "Search & Download Video (Best Quality)",
     category: "download",
-    react: "📌",
+    react: "🎬",
     filename: __filename
 },
-async (conn, mek, m, { from, q, reply, sender }) => {
+async (conn, mek, m, { from, q, reply }) => {
     try {
-        if (!q) return reply("❌ Link to do ya kuch search karne ke liye naam likho! (e.g. .pin neon car)");
+        if (!q) return reply("❌ Bilal, video ka naam ya link likho!");
 
-        await conn.sendMessage(from, { react: { text: "⏳", key: mek.key } });
-
-        // --- CHECK IF INPUT IS A LINK ---
-        if (q.includes("pin.it") || q.includes("pinterest.com")) {
-            const res = await axios.get(`https://api.xte.web.id/v3/dl/pinterest?url=${encodeURIComponent(q)}`);
-            if (!res.data.status) return reply("❌ Link working nahi hai!");
-
-            const { url, title, is_video } = res.data.result;
-            const mediaType = is_video ? { video: { url } } : { image: { url } };
-
-            return await conn.sendMessage(from, {
-                ...mediaType,
-                caption: `*📌 RESULT:* ${title || 'Pinterest'}\n\n> *Downloaded by BILAL-MD*`,
-                contextInfo: {
-                    externalAdReply: {
-                        title: "BILAL-MD PINTEREST DL",
-                        body: "Direct Download",
-                        thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
-                        sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
-                        mediaType: 1,
-                        renderLargerThumbnail: false
-                    }
-                }
-            }, { quoted: mek });
+        // 1. Search Logic
+        await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
+        let videoUrl = q;
+        if (!q.includes("youtube.com") && !q.includes("youtu.be")) {
+            const search = await yts(q);
+            const data = search.videos[0];
+            if (!data) return reply("❌ Video nahi mili!");
+            videoUrl = data.url;
         }
 
-        // --- SEARCH LOGIC (If no link provided) ---
-        const searchRes = await axios.get(`https://api.xte.web.id/v3/search/pinterest?q=${encodeURIComponent(q)}`);
+        // 2. Fetch from API
+        const apiUrl = `https://api.xte.web.id/v3/dl/ytmp4?url=${encodeURIComponent(videoUrl)}`;
+        const res = await axios.get(apiUrl);
         
-        if (!searchRes.data.status || !searchRes.data.result.length) {
-            return reply("❌ Aapki search ke mutabiq koi photo nahi mili.");
-        }
+        if (!res.data.status) return reply("❌ API server ne response nahi diya.");
 
-        // Top 1 image bhejne ke liye
-        const imgUrl = searchRes.data.result[0]; 
+        const downloadData = res.data.result;
+        const { title, download, thumbnail, quality, duration } = downloadData;
 
+        // 3. Pehle Information bhejein (Fast Response)
+        const infoMsg = `*🎬 BILAL-MD VIDEO DOWNLOADER*\n\n` +
+                        `*📌 Title:* ${title}\n` +
+                        `*📊 Quality:* ${quality}\n` +
+                        `*🕒 Duration:* ${duration || 'N/A'}\n\n` +
+                        `> *Uploading video file, please wait...*`;
+
+        await conn.sendMessage(from, { 
+            image: { url: thumbnail }, 
+            caption: infoMsg 
+        }, { quoted: mek });
+
+        // 4. Phir Direct Video File bhejein
         await conn.sendMessage(from, {
-            image: { url: imgUrl },
-            caption: `*✨ Pinterest Search:* ${q.toUpperCase()}\n\n> *Downloaded by BILAL-MD*`,
-            contextInfo: {
-                forwardingScore: 999,
-                isForwarded: true,
-                externalAdReply: {
-                    title: "BILAL-MD IMAGE SEARCH",
-                    body: `Found result for: ${q}`,
-                    thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
-                    sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
-                    mediaType: 1,
-                    renderLargerThumbnail: false
-                }
-            }
+            video: { url: download },
+            mimetype: 'video/mp4',
+            fileName: `${title}.mp4`,
+            caption: `*✅ Downloaded:* ${title}\n\n> *Powered by Bilal-MD*`
         }, { quoted: mek });
 
         await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
 
     } catch (e) {
         console.error(e);
-        reply("❌ Error: API busy hai ya search limit reach ho gayi.");
+        reply("❌ Masla aa gaya! Shayad file 100MB se bari hai ya net slow hai.");
     }
 });
