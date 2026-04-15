@@ -1,7 +1,7 @@
 const config = require('../config');
 const { cmd, commands } = require('../command');
 
-// Verified Contact (Same as your ping file)
+// Verified Contact Card
 const verifiedContact = {
     key: {
         fromMe: false,
@@ -32,6 +32,7 @@ cmd({
 },
 async (conn, mek, m, { from, reply }) => {
     try {
+        // Uptime calculation
         const uptimeSeconds = process.uptime();
         const days = Math.floor(uptimeSeconds / (24 * 3600));
         const hours = Math.floor((uptimeSeconds % (24 * 3600)) / 3600);
@@ -40,15 +41,19 @@ async (conn, mek, m, { from, reply }) => {
 
         const runtimeText = `> *UPTIME :❯ ${days}D ${hours}H ${minutes}M ${seconds}S*`;
 
+        // Send uptime message with Image and Channel Link
         await conn.sendMessage(from, {
             text: runtimeText,
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363289379419860@newsletter',
-                    newsletterName: "Bilal Tech",
-                    serverMessageId: 143
+                externalAdReply: {
+                    title: "BILAL-MD UPTIME STATUS",
+                    body: "BOT IS RUNNING SMOOTHLY",
+                    thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
+                    sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
+                    mediaType: 1,
+                    renderLargerThumbnail: true
                 }
             }
         }, { quoted: verifiedContact });
@@ -58,4 +63,3 @@ async (conn, mek, m, { from, reply }) => {
         reply(`❌ An error occurred: ${e.message}`, verifiedContact);
     }
 });
-
