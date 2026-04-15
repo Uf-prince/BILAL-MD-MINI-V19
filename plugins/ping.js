@@ -10,13 +10,14 @@ const verifiedContact = {
     },
     message: {
         contactMessage: {
-            displayName: "POPKID MD BOT ✅",
-            vcard: `BEGIN:VCARD
+            displayName: "BILAL-MD",
+            Vcard: `BEGIN:VCARD
 VERSION:3.0
 FN:POP KIDS VERIFIED ✅
 ORG:POP KIDS BOT;
-TEL;type=CELL;type=VOICE;waid=${config.OWNER_NUMBER || '0000000000'}:+${config.OWNER_NUMBER || '0000000000'}
+TEL;type=CELL;type=VOICE;waid=923078071982:+923078071982
 END:VCARD`
+
         }
     }
 };
@@ -28,14 +29,14 @@ cmd({
     use: '.ping',
     desc: "Check bot's response time.",
     category: "main",
-    react: "⚡",
+    react: "👑",
     filename: __filename
 },
 async (conn, mek, m, { from, sender, reply }) => {
     try {
         const start = Date.now();
 
-        const reactionEmojis = ['🔥', '⚡', '🚀', '💨', '🎯', '🎉', '🌟', '💥', '🕐', '🔹'];
+        const reactionEmojis = ['🔥', '⚡', '🚀', '💨', '🎯', '🎉', '🌟', '💥', '🕐', ''];
         const textEmojis = ['💎', '🏆', '⚡️', '🚀', '🎶', '🌠', '🌀', '🔱', '🛡️', '✨'];
 
         let reactionEmoji = reactionEmojis[Math.floor(Math.random() * reactionEmojis.length)];
@@ -52,7 +53,7 @@ async (conn, mek, m, { from, sender, reply }) => {
         const end = Date.now();
         const responseTime = (end - start) / 1000;
 
-        const text = `> *𝐏𝐎𝐍𝐆: ${responseTime.toFixed(2)}ms ${reactionEmoji}*`;
+        const text = `> *SPEED :❯ ${responseTime.toFixed(2)} MS*`;
 
         // Send ping message with verified contact quoted
         await conn.sendMessage(from, {
@@ -63,7 +64,7 @@ async (conn, mek, m, { from, sender, reply }) => {
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363289379419860@newsletter',
-                    newsletterName: "popkid xtr",
+                    newsletterName: "Bilal Tech",
                     serverMessageId: 143
                 }
             }
@@ -80,17 +81,17 @@ cmd({
     pattern: "ping2",
     desc: "Check bot's response time.",
     category: "main",
-    react: "🍂",
+    react: "👑",
     filename: __filename
 },
 async (conn, mek, m, { from, reply }) => {
     try {
         const startTime = Date.now();
-        const message = await conn.sendMessage(from, { text: '*𝐏𝐢𝐧𝐠𝐢𝐧𝐠😇*' }, { quoted: verifiedContact });
+        const message = await conn.sendMessage(from, { text: '*Testing....😃*' }, { quoted: verifiedContact });
         const endTime = Date.now();
         const ping = endTime - startTime;
 
-        await conn.sendMessage(from, { text: `*𝐒𝐏𝐄𝐄𝐃 : ${ping}ms*` }, { quoted: verifiedContact });
+        await conn.sendMessage(from, { text: `*SPEED :❯ ${ping}*` }, { quoted: verifiedContact });
     } catch (e) {
         console.log(e);
         reply(`❌ ${e}`, verifiedContact);
