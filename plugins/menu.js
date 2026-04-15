@@ -57,12 +57,12 @@ async (conn, mek, m, { from }) => {
                 isForwarded: true,
                 externalAdReply: {
                     showAdAttribution: true,
-                    title: `*👑 MENU 👑*`,
-                    body: config.DESCRIPTION || '*👑 BILAL-MD WHATSAPP BOT 👑*',
+                    title: `BILAL-MD MULTIDEVICE`,
+                    body: config.DESCRIPTION || 'WHATSAPP BOT',
                     mediaType: 2,
-                    mediaUrl: 'https://github.com',
+                    mediaUrl: 'github.com/Bilaltech05',
                     thumbnail: { url: config.MENU_IMAGE_URL || 'https://i.postimg.cc/7LWBgYMq/bilal.jpg' },
-                    sourceUrl: 'https://github.com/Bilalteh05'
+                    sourceUrl: 'https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G'
                 },
                 mentionedJid: [m.sender]
             }
