@@ -3,7 +3,7 @@ const { cmd } = require("../command");
 cmd({
   pattern: "save",
   alias: ["sendme", 'send'],
-  react: '📤',
+  react: '🤗',
   desc: "Forwards quoted message back to user",
   category: "utility",
   filename: __filename
@@ -11,7 +11,7 @@ cmd({
   try {
     if (!match.quoted) {
       return await client.sendMessage(from, {
-        text: "*🍁 Please reply to a message!*"
+        text: "*KISI BHI MSG KO PEHLE MENTION KARE 🤗 AUR PHIR LIKHE*\n\n*❮ SAVE ❯*\n\n*TO WO MSG APKE INBOX ME SAVE HO JAYE GA 😍*"
       }, { quoted: message });
     }
 
@@ -44,7 +44,7 @@ cmd({
         break;
       default:
         return await client.sendMessage(from, {
-          text: "❌ Only image, video, and audio messages are supported"
+          text: "*SIRF VIDEO AUDIO YA PHOTO KO MENTION KARO BAS 🤗*"
         }, { quoted: message });
     }
 
