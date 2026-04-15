@@ -1,62 +1,56 @@
 const { cmd } = require('../command');
 const axios = require('axios');
-const yts = require('yt-search');
 
 cmd({
-    pattern: "video",
-    alias: ["ytv", "vdl"],
-    desc: "Search & Download Video (Best Quality)",
+    pattern: "tiktok",
+    alias: ["tt", "ttdl"],
+    desc: "Download TikTok Video (XTE API)",
     category: "download",
-    react: "🎬",
+    react: "📱",
     filename: __filename
 },
 async (conn, mek, m, { from, q, reply }) => {
     try {
-        if (!q) return reply("❌ Bilal, video ka naam ya link likho!");
+        if (!q) return reply("❌ Bilal, TikTok link to do!");
 
-        // 1. Search Logic
-        await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
-        let videoUrl = q;
-        if (!q.includes("youtube.com") && !q.includes("youtu.be")) {
-            const search = await yts(q);
-            const data = search.videos[0];
-            if (!data) return reply("❌ Video nahi mili!");
-            videoUrl = data.url;
-        }
+        await conn.sendMessage(from, { react: { text: "⏳", key: mek.key } });
 
-        // 2. Fetch from API
-        const apiUrl = `https://api.xte.web.id/v3/dl/ytmp4?url=${encodeURIComponent(videoUrl)}`;
+        // XTE TikTok API Call
+        const apiUrl = `https://api.xte.web.id/v3/dl/tiktok?url=${encodeURIComponent(q)}`;
         const res = await axios.get(apiUrl);
         
-        if (!res.data.status) return reply("❌ API server ne response nahi diya.");
+        if (!res.data.status || !res.data.result) {
+            return reply("❌ Video nahi mil saki. Link check karein.");
+        }
 
-        const downloadData = res.data.result;
-        const { title, download, thumbnail, quality, duration } = downloadData;
+        const data = res.data.result;
+        const videoUrl = data.video; // No-Watermark MP4 Link
+        const title = data.title || "TikTok Video";
+        const author = data.author || "User";
 
-        // 3. Pehle Information bhejein (Fast Response)
-        const infoMsg = `*🎬 BILAL-MD VIDEO DOWNLOADER*\n\n` +
-                        `*📌 Title:* ${title}\n` +
-                        `*📊 Quality:* ${quality}\n` +
-                        `*🕒 Duration:* ${duration || 'N/A'}\n\n` +
-                        `> *Uploading video file, please wait...*`;
+        // 1. Send Info Message with Thumbnail
+        const infoMsg = `*📱 BILAL-MD TIKTOK DL*\n\n` +
+                        `*👤 Author:* ${author}\n` +
+                        `*📝 Title:* ${title}\n\n` +
+                        `> *Uploading video file...*`;
 
         await conn.sendMessage(from, { 
-            image: { url: thumbnail }, 
+            image: { url: data.thumbnail || "https://i.postimg.cc/7LWBgYMq/bilal.jpg" }, 
             caption: infoMsg 
         }, { quoted: mek });
 
-        // 4. Phir Direct Video File bhejein
+        // 2. Send Only Video File (No Audio separately)
         await conn.sendMessage(from, {
-            video: { url: download },
+            video: { url: videoUrl },
+            caption: `*✅ Video Downloaded Successfully*\n\n> *Powered by BILAL-MD*`,
             mimetype: 'video/mp4',
-            fileName: `${title}.mp4`,
-            caption: `*✅ Downloaded:* ${title}\n\n> *Powered by Bilal-MD*`
+            fileName: `${author}_tiktok.mp4`
         }, { quoted: mek });
 
         await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
 
     } catch (e) {
-        console.error(e);
-        reply("❌ Masla aa gaya! Shayad file 100MB se bari hai ya net slow hai.");
+        console.error("TikTok DL Error:", e);
+        reply("❌ Error: API response nahi de rahi.");
     }
 });
