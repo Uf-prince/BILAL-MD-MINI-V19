@@ -11,73 +11,56 @@ cmd({
 },
 async (conn, mek, m, { from, sender, reply }) => {
     try {
-        const quoted =
-            mek.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-
+        // Quoted message check
+        const quoted = m.quoted ? m.quoted : mek.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+        
         if (!quoted) {
-            return reply("*APKO KISI NE PRIVATE PHOTO VIDEO YA VOICE BHEJI HAI 😟 AUR AP USE BAR BAR DEKHNA CHAHTE HAI 😄 TO PEHLE US MSG KO MENTION KR LO 😍 AUR PHIT LIKHO* \n\n*❮VV❯*");
+            return reply("*APKO KISI NE PRIVATE PHOTO VIDEO YA VOICE BHEJI HAI 😟 AUR AP USE BAR BAR DEKHNA CHAHTE HAI 😄 TO PEHLE US MSG KO MENTION KR LO 😍 AUR PHIR LIKHO* \n\n*❮VV❯*");
         }
 
-        // Handle view-once wrapper (Baileys v6+)
-        const viewOnceMsg =
-            quoted.viewOnceMessageV2 ||
-            quoted.viewOnceMessage ||
-            null;
+        // View Once Message find karna
+        const viewOnce = quoted.viewOnceMessageV2 || quoted.viewOnceMessage || quoted;
+        const type = Object.keys(viewOnce.message || viewOnce)[0];
+        const media = (viewOnce.message || viewOnce)[type];
 
-        const mediaMessage =
-            viewOnceMsg?.message?.imageMessage ||
-            viewOnceMsg?.message?.videoMessage ||
-            quoted.imageMessage ||
-            quoted.videoMessage;
-
-        if (!mediaMessage) {
-            return reply("*DUBARA KOSHISH KARE 🤗*");
+        // Sirf Image ya Video ho
+        if (!type.includes('imageMessage') && !type.includes('videoMessage')) {
+            return reply("*DUBARA KOSHISH KARE 🤗 (Sirf Image ya Video mention karein)*");
         }
 
-        const isImage = !!mediaMessage.imageMessage || mediaMessage.mimetype?.startsWith("image");
-        const isVideo = !!mediaMessage.videoMessage || mediaMessage.mimetype?.startsWith("video");
-
-        if (!mediaMessage.viewOnce) {
-            return reply("*YEH PRIVATE MSG NAHI HAI 🙄*");
-        }
-
-        // Ping-style reaction
-        const reactionEmojis = ['🔥','⚡','🚀','💨','🎯','🎉','🌟','💥','👁️'];
+        // Reaction
+        const reactionEmojis = ['🔥', '⚡', '🚀', '💥', '👁️'];
         const reactEmoji = reactionEmojis[Math.floor(Math.random() * reactionEmojis.length)];
+        await conn.sendMessage(from, { react: { text: reactEmoji, key: mek.key } });
 
-        await conn.sendMessage(from, {
-            react: { text: reactEmoji, key: mek.key }
-        });
-
-        // Download media
-        const stream = await downloadContentFromMessage(
-            mediaMessage,
-            isImage ? "image" : "video"
-        );
-
+        // Media Download karna
+        const stream = await downloadContentFromMessage(media, type.includes('image') ? 'image' : 'video');
         let buffer = Buffer.from([]);
         for await (const chunk of stream) {
             buffer = Buffer.concat([buffer, chunk]);
         }
 
-        // Send revealed media (NOT view-once)
+        // Message bhejna with Image/Link Branding
         await conn.sendMessage(from, {
-            [isImage ? "image" : "video"]: buffer,
-            caption: mediaMessage.caption || '',
+            [type.includes('image') ? "image" : "video"]: buffer,
+            caption: media.caption || '> *REVEALED BY BILAL-MD*',
             contextInfo: {
                 mentionedJid: [sender],
                 forwardingScore: 999,
                 isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: "120363289379419860@newsletter",
-                    newsletterName: "BILAL MD",
-                    serverMessageId: 143
+                externalAdReply: {
+                    title: "BILAL-MD VIEW ONCE REVEALER",
+                    body: "Tap to Join Official Channel",
+                    thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
+                    sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
+                    mediaType: 1,
+                    renderLargerThumbnail: false // Isay false rakha hai taake media clear nazar aaye
                 }
             }
         }, { quoted: mek });
 
     } catch (err) {
         console.error("VV Command Error:", err);
-        reply("❌ Failed to reveal view-once media.");
+        reply("❌ Failed to reveal view-once media. Shayad bot ke paas permissions nahi hain.");
     }
 });
