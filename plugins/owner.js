@@ -1,4 +1,4 @@
-const config = require('../config');
+hereconst config = require('../config');
 const { cmd, commands } = require('../command');
 
 cmd({
@@ -11,29 +11,31 @@ cmd({
 },
 async (conn, mek, m, { from, reply }) => {
     try {
-        // Bot ka number aur profile name extract karna
+        // 1. Bot Number aur User Details
         const botNumber = conn.user.id.split(':')[0];
-        const botName = conn.user.name || "BILAL-MD OWNER"; // WhatsApp profile wala name uthayega
+        
+        // Priority: Profile Name > Config Name > Default Name
+        const ownerName = conn.user.name || config.OWNER_NAME || "BILAL KING"; 
 
         const botVcard = `BEGIN:VCARD
 VERSION:3.0
-FN:${botName}
-ORG:BILAL TECH;
+FN:${ownerName}
+ORG:BILAL-MD TECH;
 TEL;type=CELL;type=VOICE;waid=${botNumber}:+${botNumber}
 END:VCARD`;
 
-        // Contact Card aur Channel Link ke saath message bhejna
+        // 2. Contact Card bhejyein
         await conn.sendMessage(from, {
             contacts: {
-                displayName: botName,
+                displayName: ownerName,
                 contacts: [{ vcard: botVcard }]
             },
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,
                 externalAdReply: {
-                    title: `OWNER: ${botName}`,
-                    body: "Click here to Join Official Channel",
+                    title: `OWNER: ${ownerName}`,
+                    body: "MULTIDEVICE WHATSAPP BOT",
                     thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
                     sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
                     mediaType: 1,
@@ -44,6 +46,6 @@ END:VCARD`;
 
     } catch (e) {
         console.error("Error in owner command:", e);
-        reply(`❌ An error occurred: ${e.message}`);
+        reply(`❌ Error: ${e.message}`);
     }
 });
