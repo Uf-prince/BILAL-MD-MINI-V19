@@ -11,7 +11,7 @@ cmd({
 },
 async (conn, mek, m, { from, q, reply }) => {
     try {
-        if (!q) return reply("❌ Bilal, kuch poochein to sahi! (e.g. .ai coding kya hai?)");
+        if (!q) return reply("*APKE PASS KOI SAWAL ");
 
         // Processing reaction
         await conn.sendMessage(from, { react: { text: "⏳", key: mek.key } });
