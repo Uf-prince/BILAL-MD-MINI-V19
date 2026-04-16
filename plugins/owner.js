@@ -1,4 +1,4 @@
-hereconst config = require('../config');
+const config = require('../config');
 const { cmd, commands } = require('../command');
 
 cmd({
@@ -11,11 +11,8 @@ cmd({
 },
 async (conn, mek, m, { from, reply }) => {
     try {
-        // 1. Bot Number aur User Details
         const botNumber = conn.user.id.split(':')[0];
-        
-        // Priority: Profile Name > Config Name > Default Name
-        const ownerName = conn.user.name || config.OWNER_NAME || "BILAL KING"; 
+        const ownerName = config.OWNER_NAME || "BILAL-MD"; 
 
         const botVcard = `BEGIN:VCARD
 VERSION:3.0
@@ -24,7 +21,7 @@ ORG:BILAL-MD TECH;
 TEL;type=CELL;type=VOICE;waid=${botNumber}:+${botNumber}
 END:VCARD`;
 
-        // 2. Contact Card bhejyein
+        // Contact Card aur Image ke saath Button-like Link
         await conn.sendMessage(from, {
             contacts: {
                 displayName: ownerName,
@@ -34,12 +31,13 @@ END:VCARD`;
                 forwardingScore: 999,
                 isForwarded: true,
                 externalAdReply: {
-                    title: `OWNER: ${ownerName}`,
-                    body: "MULTIDEVICE WHATSAPP BOT",
+                    title: `🌟 OWNER: ${ownerName}`,
+                    body: "Tap here to join our WhatsApp Channel 🚀",
                     thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
-                    sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
+                    sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G", // Aapka Channel Link
                     mediaType: 1,
-                    renderLargerThumbnail: true
+                    renderLargerThumbnail: true, // Is se image bari aur button jaisi dikhe gi
+                    showAdAttribution: true
                 }
             }
         }, { quoted: mek });
