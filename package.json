@@ -1,12 +1,12 @@
 {
-  "name": "POPKID-MD",
-  "version": "2.0.0",
-  "description": "A WhatsApp Bot Created By POPKID BOT",
+  "name": "BILAL-MD-V19",
+  "version": "3.0.0",
+  "description": "Premium WhatsApp Bot Created By Bilal",
   "main": "popkid.js",
   "scripts": {
-    "start": "pm2 start popkid.js --deep-monitoring --attach --name BILAL-MD-MINI-V19",
-    "stop": "pm2 stop BILAL-MD-MINI-V19",
-    "restart": "pm2 restart BILAL-MD-MINI-V19"
+    "start": "pm2 start popkid.js --deep-monitoring --attach --name BILAL-MD-V19",
+    "stop": "pm2 stop BILAL-MD-V19",
+    "restart": "pm2 restart BILAL-MD-V19"
   },
   "engines": {
     "node": "20.x",
