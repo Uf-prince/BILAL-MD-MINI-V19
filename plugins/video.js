@@ -1,49 +1,47 @@
 const { cmd } = require('../command');
-const { ytmp4 } = require('@dark-yasiya/yt-dl.js');
-const yts = require('yt-search');
+const axios = require('axios');
 
 cmd({
     pattern: "video",
     alias: ["mp4", "ytv"],
-    desc: "Download YouTube Video",
+    desc: "Download YouTube Video via Gifted API",
     category: "download",
     react: "🎬",
     filename: __filename
 },
 async (conn, mek, m, { from, q, reply }) => {
     try {
-        if (!q) return reply("❌ Bilal, video ka naam ya link do!");
+        if (!q) return reply("❌ Bilal, link ya video ka naam do!");
 
-        await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
+        await conn.sendMessage(from, { react: { text: "⏳", key: mek.key } });
 
-        // Search logic with validation
-        const search = await yts(q);
-        const data = search.videos[0];
-        if (!data || !data.url) return reply("❌ Bilal, YouTube par ye video nahi mili!");
-
-        // Download logic with safety check
-        const download = await ytmp4(data.url);
+        // API URL (Apikey 'gifted' hi rehne dena agar tumhare paas apni nahi hai)
+        const apiUrl = `https://api.giftedtech.co.ke/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`;
         
-        // Checking if download link exists to avoid 'toString' error
-        if (!download || !download.download_url) {
-            return reply("❌ Sorry Bilal, Library download link generate nahi kar saki. Try again!");
+        const response = await axios.get(apiUrl);
+        const data = response.data;
+
+        if (!data.success || !data.result) {
+            return reply("❌ API ne response nahi diya. Shayad link sahi nahi hai.");
         }
 
-        const msg = `*🎬 BILAL-MD VIDEO DOWNLOADER*\n\n` +
-                    `*📌 Title:* ${data.title}\n` +
-                    `*🕒 Duration:* ${data.timestamp}\n\n` +
-                    `> *Powered by BILAL-MD Premium*`;
+        const { title, thumbnail, download_url } = data.result;
 
+        const msg = `*🎬 BILAL-MD VIDEO DOWNLOADER*\n\n` +
+                    `*📌 Title:* ${title}\n` +
+                    `*📊 Status:* Success\n\n` +
+                    `> *Powered by GiftedTech API*`;
+
+        // Video Send Karein
         await conn.sendMessage(from, {
-            video: { url: download.download_url },
+            video: { url: download_url },
             caption: msg
         }, { quoted: mek });
 
         await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
 
     } catch (e) {
-        console.error("YT Video Error:", e);
-        // Error message ko handle kiya taake crash na ho
-        reply("❌ Masla aa gaya! Shayad video bohot bari hai ya link dead hai.");
+        console.error(e);
+        reply("❌ Error: API connection mein masla hai.");
     }
 });
