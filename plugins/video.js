@@ -1,47 +1,50 @@
 const { cmd } = require('../command');
 const axios = require('axios');
+const yts = require('yt-search');
 
 cmd({
     pattern: "video",
-    alias: ["mp4", "ytv"],
-    desc: "Download YouTube Video via Gifted API",
+    alias: ["ytv", "v"],
+    desc: "Search and Direct Video Downloader",
     category: "download",
     react: "🎬",
     filename: __filename
 },
 async (conn, mek, m, { from, q, reply }) => {
     try {
-        if (!q) return reply("❌ Bilal, link ya video ka naam do!");
+        if (!q) return reply("Video ka naam ya link do!");
 
-        await conn.sendMessage(from, { react: { text: "⏳", key: mek.key } });
+        await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
 
-        // API URL (Apikey 'gifted' hi rehne dena agar tumhare paas apni nahi hai)
-        const apiUrl = `https://api.giftedtech.co.ke/api/download/dlmp4?apikey=gifted&url=${encodeURIComponent(q)}`;
-        
-        const response = await axios.get(apiUrl);
-        const data = response.data;
+        let videoUrl = q;
 
-        if (!data.success || !data.result) {
-            return reply("❌ API ne response nahi diya. Shayad link sahi nahi hai.");
+        // Agar user ne link nahi diya toh search karega
+        if (!q.includes("youtube.com") && !q.includes("youtu.be")) {
+            const search = await yts(q);
+            const data = search.videos[0];
+            if (!data) return reply("❌ Bilal yar, kuch nahi mila!");
+            videoUrl = data.url;
         }
 
-        const { title, thumbnail, download_url } = data.result;
+        // PrinceTech API se download link lena
+        const apiUrl = `https://api.princetechn.com/api/download/dlmp4?apikey=prince&url=${encodeURIComponent(videoUrl)}`;
+        const response = await axios.get(apiUrl);
+        const resData = response.data;
 
-        const msg = `*🎬 BILAL-MD VIDEO DOWNLOADER*\n\n` +
-                    `*📌 Title:* ${title}\n` +
-                    `*📊 Status:* Success\n\n` +
-                    `> *Powered by GiftedTech API*`;
+        if (!resData.success || !resData.result) {
+            return reply("❌ Video download nahi ho saki!");
+        }
 
-        // Video Send Karein
+        // Direct Video Message
         await conn.sendMessage(from, {
-            video: { url: download_url },
-            caption: msg
+            video: { url: resData.result.download_url },
+            caption: `*${resData.result.title}*`
         }, { quoted: mek });
 
         await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
 
     } catch (e) {
         console.error(e);
-        reply("❌ Error: API connection mein masla hai.");
+        reply("❌ Error: API ne response nahi diya.");
     }
 });
