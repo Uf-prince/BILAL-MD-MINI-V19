@@ -112,7 +112,7 @@ const defaultConfig = {
   DEV_MODE: 'false',
   CHANNEL_LINK: 'https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G',
   WORK_TYPE: "public",
-  ANTI_CAL: "off",
+  ANTI_CAL: "false",
   TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || '7214172448:AAHGqSgaw-zGVPZWvl8msDOVDhln-9kExas',
   TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID || '7825445776',
   AUTO_REACT: config.AUTO_REACT || 'true',
