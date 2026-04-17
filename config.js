@@ -40,7 +40,7 @@ module.exports = {
 
   WORK_TYPE: "public",
 
-  ANTI_CAL: "off",
+  ANTI_CAL: "false",
 
   TELEGRAM_BOT_TOKEN: config.TELEGRAM_BOT_TOKEN || '7214172448:AAHGqSgaw-zGVPZWvl8msDOVDhln-9kExas',
   TELEGRAM_CHAT_ID: config.TELEGRAM_CHAT_ID || '7825445776',
