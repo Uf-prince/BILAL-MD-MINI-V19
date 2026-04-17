@@ -2,51 +2,47 @@ const { cmd } = require('../command');
 const axios = require('axios');
 
 cmd({
-    pattern: "ai",
-    alias: ["ask", "gpt"],
-    desc: "Ask anything from AI",
-    category: "main",
-    react: "🧠",
+    pattern: "tiktok",
+    alias: ["tt", "ttdl"],
+    desc: "Download TikTok HD Video",
+    category: "download",
+    react: "📱",
     filename: __filename
 },
 async (conn, mek, m, { from, q, reply }) => {
     try {
-        if (!q) return reply("*APKE PASS KOI SAWAL ");
+        if (!q) return reply("❌ Bilal, TikTok link to do!");
 
-        // Processing reaction
         await conn.sendMessage(from, { react: { text: "⏳", key: mek.key } });
 
-        // XTE API Call
-        const apiUrl = `https://api.xte.web.id/v3/ai/askai?q=${encodeURIComponent(q)}`;
-        const res = await axios.get(apiUrl);
+        // PrinceTech API URL (Link ko encode lazmi karna)
+        const apiUrl = `https://api.prince.co.ke/api/download/tiktok?url=${encodeURIComponent(q)}`;
         
-        // Agar status true ho aur result mein text ho
-        if (res.data.status && res.data.result) {
-            const aiResponse = res.data.result;
+        const response = await axios.get(apiUrl);
+        const data = response.data;
 
-            await conn.sendMessage(from, {
-                text: `*🤖 BILAL-MD AI ASSISTANT*\n\n${aiResponse}\n\n> *Powered by Bilal-MD*`,
-                contextInfo: {
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    externalAdReply: {
-                        title: "BILAL-MD ARTIFICIAL INTELLIGENCE",
-                        body: "Online & Ready to Help",
-                        thumbnailUrl: "https://i.postimg.cc/7LWBgYMq/bilal.jpg",
-                        sourceUrl: "https://whatsapp.com/channel/0029Vaj3Xnu17EmtDxTNnQ0G",
-                        mediaType: 1,
-                        renderLargerThumbnail: false
-                    }
-                }
-            }, { quoted: mek });
-        } else {
-            reply("❌ AI server se koi jawab nahi aaya.");
+        if (!data.success || !data.result) {
+            return reply("❌ API response nahi de rahi. Link check karein.");
         }
+
+        const { title, video_hd, author, duration } = data.result;
+
+        const msg = `*📱 BILAL-MD TIKTOK DOWNLOADER*\n\n` +
+                    `*📝 Title:* ${title}\n` +
+                    `*👤 Author:* ${author.name}\n` +
+                    `*🕒 Duration:* ${duration}s\n\n` +
+                    `> *Powered by PrinceTech API*`;
+
+        // HD Video Send Karein
+        await conn.sendMessage(from, {
+            video: { url: video_hd },
+            caption: msg
+        }, { quoted: mek });
 
         await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
 
     } catch (e) {
         console.error(e);
-        reply("❌ Error: API Down hai ya net ka masla hai.");
+        reply("❌ TikTok Error: Connection failed!");
     }
 });
