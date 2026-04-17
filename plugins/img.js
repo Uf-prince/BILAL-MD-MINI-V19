@@ -11,7 +11,7 @@ cmd({
 },
 async (conn, mek, m, { from, q, reply }) => {
     try {
-        if (!q) return reply("Kashachi image pahije? Naav liha!");
+        if (!q) return reply("photos download krne k lie Ese likho .img cats");
 
         await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
 
@@ -22,7 +22,7 @@ async (conn, mek, m, { from, q, reply }) => {
         const data = response.data;
 
         if (!data.success || !data.results || data.results.length === 0) {
-            return reply("Kahihi sapadle nahi!");
+            return reply("Dubara koshish kre");
         }
 
         // Pahilya 5 images pathvanya sathi loop (Tumhi sankhya badlu shakta)
